@@ -1,0 +1,11 @@
+import "../index.css";
+export default function ExpenseItem(){
+    return <div>
+        <p>This is expense item</p>
+        <ul>
+            <li>Food - $5</li>
+            <li>Petrol - $20</li>
+            <li>Movie - $10</li>
+        </ul>
+    </div>
+}
