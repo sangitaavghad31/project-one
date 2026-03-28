@@ -1,11 +1,13 @@
 import "../index.css";
 export default function ExpenseItem(){
-    return <div>
-        <p>This is expense item</p>
-        <ul>
-            <li>Food - $5</li>
-            <li>Petrol - $20</li>
-            <li>Movie - $10</li>
-        </ul>
-    </div>
+    return (
+    <>
+      <div>15 August 2023</div>
+      <div>
+        <div>Book</div>
+        <div>Delhi</div>
+          <div>$10</div>
+      </div>
+    </>
+  )
 }
