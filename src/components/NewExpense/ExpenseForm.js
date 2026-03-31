@@ -7,6 +7,7 @@ const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [enteredAmount, setEnteredAmount] = useState("");
   const [enteredDate, setEnteredDate] = useState("");
+  const [isVisible, setIsVisible] = useState(false);
 
   const titleChangeHandler = (event) => {
     setEnteredTitle(event.target.value);
@@ -19,35 +20,48 @@ const ExpenseForm = (props) => {
   const dateChangeHandler = (event) => {
     setEnteredDate(event.target.value);
   };
-  function formSubmitHandler(event){
+
+  const showHandler = () => {
+    setIsVisible(true);
+  }
+
+  const hideHandler = () => {
+    setIsVisible(false);
+  }
+
+  const formSubmitHandler = (event) => {
     event.preventDefault();
-    const userInput = {
+    const expenseData = {
       title: enteredTitle,
-      amount: enteredAmount,
+      price: enteredAmount,
       date: new Date(enteredDate),
-      id: Math.random().toString()
-    }
-    props.onSaveExpenseData(userInput);
+    };
+    props.onSaveExpenseData(expenseData);
     setEnteredTitle("");
     setEnteredAmount("");
     setEnteredDate("");
-  }
+  };
+
   return (
     <form onSubmit={formSubmitHandler}>
-      <div className="new-expense__controls">
+      {isVisible? (<><div className="new-expense__controls">
         <div className="new-expense__control">
           <label htmlFor="title">Title</label>
-          <input type="text"
+          <input
+            type="text"
             value={enteredTitle}
             id="title"
-            onChange={titleChangeHandler} />
+            onChange={titleChangeHandler}
+          />
         </div>
         <div className="new-expense__control">
           <label htmlFor="amount">Amount</label>
-          <input type="number"
+          <input
+            type="number"
             value={enteredAmount}
             id="amount"
-            onChange={amountChangeHandler} />
+            onChange={amountChangeHandler}
+          />
         </div>
         <div className="new-expense__control">
           <label htmlFor="date">Date</label>
@@ -61,9 +75,15 @@ const ExpenseForm = (props) => {
           />
         </div>
       </div>
-      <div className="new-expense__actions">
-        <button type="submit">Add Expense</button>
-      </div>
+        <div className="new-expense__actions">
+          <button type="button" onClick={hideHandler}>Cancel</button>
+          <button type="submit" onClick={() => { setIsVisible((prevState) => !prevState) }}>Add Expense</button>
+        </div>
+        </>
+      ):(<div className="new-expense__action">
+        <button type="button" onClick={showHandler}>Add Expense</button>
+      </div>)}
+
     </form>
   );
 };
