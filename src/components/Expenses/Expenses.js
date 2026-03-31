@@ -1,32 +1,50 @@
+// Write your code at relevant places in the code below:
+
+import React, { useState } from "react";
 import ExpenseItem from "./ExpenseItem";
 import ExpensesFilter from "./ExpensesFilter";
-import Card from "../UI/Card";
 import "./Expenses.css";
-import { useState } from "react";
+import Card from "../UI/Card";
 
-function Expenses(props) {
-  const [filtereYear, setFilterYear] = useState("2023");
+const Expenses = (props) => {
+  const [filteredYear, setFilteredYear] = useState("2023");
 
-  const changeFilterHandler = (selectedYear) =>{
-    setFilterYear(selectedYear)
+  const changeFilterHandler = (selectedYear) => {
+    setFilteredYear(selectedYear);
+  };
+
+  const filteredExpenses = props.expenses.filter((expense) => {
+    return expense.date.getFullYear().toString() === filteredYear;
+  });
+
+  let expensesContent = <p>No expenses found</p>;
+  if(filteredExpenses.length > 0) {
+    expensesContent = filteredExpenses.map((expense) => {
+
+      return (
+        <>
+        <ExpenseItem
+          key={expense.id}
+          title={expense.title}
+          date={expense.date}
+          price={expense.price}
+          />
+          {filteredExpenses.length==1 && (<p>Only one expense found. Please add more</p>)}
+        </>
+      );
+    });
+    
   }
+
   return (
     <Card className="expenses">
-      <ExpensesFilter selected={filtereYear} onChangeFilter={changeFilterHandler}/>
-    {
-      props.expenses
-      .filter(ex=>ex.date.getFullYear()==filtereYear)
-      .map((expense) => {
-        return <ExpenseItem
-          key={expense.id}
-          location={expense.location}
-          date={expense.date}
-          title={expense.title}
-          price={expense.price}
-        />})
-      }
+      <ExpensesFilter
+        selected={filteredYear}
+        onChangeFilter={changeFilterHandler}
+      />
+      {expensesContent}
     </Card>
-  )
-}
+  );
+};
 
 export default Expenses;
